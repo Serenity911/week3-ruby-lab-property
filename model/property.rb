@@ -54,6 +54,25 @@ attr_accessor :address, :value, :number_of_bedrooms, :buy_let_status
     db.exec_prepared("delete_all")
     db.close()
   end
+
+  def update()
+    db = PG.connect({dbname: 'properties', host: 'localhost'})
+    sql =
+    "
+    UPDATE properties SET (
+      address,
+      value,
+      number_of_bedrooms,
+      buy_let_status
+    ) = ($1, $2, $3, $4)
+    WHERE id = $5;
+    "
+    values = [@address, @value, @number_of_bedrooms, @buy_let_status, @id]
+    db.prepare("update", sql)
+    db.exec_prepared("update", values)
+    db.close()
+  end
+
 end
 
 # db = PG.connect({dbname: 'properties', host: 'localhost'})
