@@ -8,8 +8,8 @@ attr_accessor :address, :value, :number_of_bedrooms, :buy_let_status
   def initialize(options)
     @id = options['id'].to_i if options['id']
     @address = options['address']
-    @value = options['value']
-    @number_of_bedrooms = options['number_of_bedrooms']
+    @value = options['value'].to_i
+    @number_of_bedrooms = options['number_of_bedrooms'].to_i
     @buy_let_status = options['buy_let_status']
   end
 
@@ -71,6 +71,16 @@ attr_accessor :address, :value, :number_of_bedrooms, :buy_let_status
     db.prepare("update", sql)
     db.exec_prepared("update", values)
     db.close()
+  end
+
+  def find()
+    db = PG.connect({dbname: 'properties', host: 'localhost'})
+    sql = "SELECT * FROM properties WHERE ID = $1;"
+    values = [@id]
+    db.prepare("find_by_id", sql)
+    unit = db.exec_prepared("find_by_id", values)
+    db.close()
+    return Property.new(unit[0])
   end
 
 end
