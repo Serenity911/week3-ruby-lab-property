@@ -2,7 +2,8 @@ require('pg')
 
 class Property
 
-attr_reader :id, :address, :value, :number_of_bedrooms, :buy_let_status
+attr_reader :id
+attr_accessor :address, :value, :number_of_bedrooms, :buy_let_status
 
   def initialize(options)
     @id = options['id'].to_i if options['id']
@@ -37,4 +38,15 @@ attr_reader :id, :address, :value, :number_of_bedrooms, :buy_let_status
     return unit.map{|unit_hash| Property.new(unit_hash)}
   end
 
+  def delete()
+    db = PG.connect({dbname: 'properties', host: 'localhost'})
+    sql = "DELETE FROM properties WHERE id = $1;"
+    values = [@id]
+    db.prepare("delete_one", sql)
+    db.exec_prepared("delete_one", values)
+    db.close()
+  end
 end
+
+# db = PG.connect({dbname: 'properties', host: 'localhost'})
+# db.close()
