@@ -15,5 +15,7 @@ property1 = Property.new({
     'buy_let_status' => "on sale"
     })
 
+Property.delete_all()
+
 binding.pry
 nil

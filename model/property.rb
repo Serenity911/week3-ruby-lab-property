@@ -46,6 +46,14 @@ attr_accessor :address, :value, :number_of_bedrooms, :buy_let_status
     db.exec_prepared("delete_one", values)
     db.close()
   end
+
+  def Property.delete_all()
+    db = PG.connect({dbname: 'properties', host: 'localhost'})
+    sql = "DELETE FROM properties;"
+    db.prepare("delete_all", sql)
+    db.exec_prepared("delete_all")
+    db.close()
+  end
 end
 
 # db = PG.connect({dbname: 'properties', host: 'localhost'})
