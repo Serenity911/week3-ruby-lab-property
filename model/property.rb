@@ -28,4 +28,13 @@ attr_reader :id, :address, :value, :number_of_bedrooms, :buy_let_status
     db.close()
   end
 
+  def Property.all()
+    db = PG.connect({dbname: 'properties', host: 'localhost'})
+    sql = "SELECT * FROM properties;"
+    db.prepare("all", sql)
+    unit = db.exec_prepared("all")
+    db.close()
+    return unit.map{|unit_hash| Property.new(unit_hash)}
+  end
+
 end
